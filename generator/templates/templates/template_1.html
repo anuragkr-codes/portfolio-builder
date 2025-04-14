@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ portfolio.name }} - Portfolio</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+      :root {
+        --primary-color: #6366f1;
+        --primary-dark: #4f46e5;
+        --secondary-color: #f8fafc;
+        --accent-color: #f43f5e;
+        --text-color: #1e293b;
+        --light-text: #64748b;
+        --card-bg: #ffffff;
+        --gradient-start: #6366f1;
+        --gradient-end: #a855f7;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.7;
+        color: var(--text-color);
+        background-color: var(--secondary-color);
+        overflow-x: hidden;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: 700;
+        line-height: 1.3;
+      }
+
+      .btn {
+        border-radius: 100px;
+        padding: 10px 24px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 6px rgba(99, 102, 241, 0.1);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        border: none;
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(135deg, var(--gradient-end), var(--gradient-start));
+        transform: translateY(-3px);
+        box-shadow: 0 10px 15px rgba(99, 102, 241, 0.2);
+      }
+
+      .btn-outline-dark {
+        border: 2px solid var(--text-color);
+        color: var(--text-color);
+        font-weight: 600;
+      }
+
+      .btn-outline-dark:hover {
+        background-color: var(--text-color);
+        transform: translateY(-3px);
+      }
+
+      .hero {
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        color: white;
+        padding: 160px 0 120px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        width: 150%;
+        height: 150px;
+        background: var(--secondary-color);
+        bottom: -50px;
+        left: -25%;
+        border-radius: 100%;
+        z-index: 1;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        letter-spacing: -0.5px;
+        margin-bottom: 1.5rem;
+      }
+
+      .hero p {
+        font-size: 1.5rem;
+        font-weight: 400;
+        max-width: 700px;
+        margin: 0 auto;
+        opacity: 0.95;
+      }
+
+      .section {
+        padding: 100px 0;
+      }
+
+      .section-title {
+        position: relative;
+        margin-bottom: 60px;
+        font-weight: 800;
+        font-size: 2.5rem;
+        color: var(--text-color);
+        text-align: center;
+        letter-spacing: -0.5px;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -15px;
+        width: 60px;
+        height: 5px;
+        transform: translateX(-50%);
+        background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+        border-radius: 100px;
+      }
+
+      .card {
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        transition: all 0.5s ease;
+        height: 100%;
+        background-color: var(--card-bg);
+      }
+
+      .project-card {
+        transition: transform 0.5s ease, box-shadow 0.5s ease;
+        height: 100%;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      .project-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+      }
+
+      .project-card .card-img-top {
+        height: 220px;
+        object-fit: cover;
+        transition: transform 1s ease;
+      }
+
+      .project-card:hover .card-img-top {
+        transform: scale(1.05);
+      }
+
+      .project-card .card-body {
+        padding: 30px;
+      }
+
+      .project-card .card-title {
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: var(--text-color);
+      }
+
+      .project-card .card-text {
+        color: var(--light-text);
+        margin-bottom: 20px;
+      }
+
+      .skill-bar {
+        height: 10px;
+        border-radius: 100px;
+        background-color: #e2e8f0;
+        margin-bottom: 25px;
+        overflow: hidden;
+      }
+
+      .skill-progress {
+        height: 100%;
+        border-radius: 100px;
+        background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+        transition: width 1.5s ease-in-out;
+        position: relative;
+      }
+
+      .skill-progress::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-image: linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.15) 25%,
+          transparent 25%,
+          transparent 50%,
+          rgba(255, 255, 255, 0.15) 50%,
+          rgba(255, 255, 255, 0.15) 75%,
+          transparent 75%,
+          transparent
+        );
+        background-size: 20px 20px;
+        animation: move 2s linear infinite;
+      }
+
+      @keyframes move {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 40px 0;
+        }
+      }
+
+      .timeline {
+        position: relative;
+        padding: 20px 0;
+      }
+
+      .experience-item,
+      .education-item {
+        position: relative;
+        padding: 30px;
+        margin-bottom: 40px;
+        border-radius: 16px;
+        background-color: var(--card-bg);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .experience-item:hover,
+      .education-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(99, 102, 241, 0.1);
+      }
+
+      .experience-item h4,
+      .education-item h4 {
+        color: var(--text-color);
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .experience-item h5,
+      .education-item h5 {
+        color: var(--primary-color);
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+
+      .text-muted {
+        color: var(--light-text) !important;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+        display: block;
+      }
+
+      .contact-info {
+        margin-bottom: 25px;
+        transition: all 0.3s ease;
+        background-color: var(--card-bg);
+        padding: 15px 20px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .contact-info:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.1);
+      }
+
+      .contact-info i {
+        color: var(--primary-color);
+        margin-right: 15px;
+        font-size: 1.3rem;
+      }
+
+      .social-links {
+        margin-top: 30px;
+      }
+
+      .social-links a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        background-color: #ffffff;
+        color: var(--primary-color);
+        border-radius: 50%;
+        margin-right: 15px;
+        transition: all 0.3s ease;
+        font-size: 1.3rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .social-links a:hover {
+        background-color: var(--primary-color);
+        color: white;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+      }
+
+      .bg-light {
+        background-color: #ffffff !important;
+      }
+
+      footer {
+        padding: 50px 0;
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        color: white;
+        position: relative;
+      }
+
+      footer::before {
+        content: "";
+        position: absolute;
+        width: 150%;
+        height: 150px;
+        background: var(--secondary-color);
+        top: -50px;
+        left: -25%;
+        border-radius: 100%;
+      }
+
+      footer .container {
+        position: relative;
+        z-index: 1;
+      }
+
+      .scroll-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        transition: all 0.3s ease;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 999;
+      }
+
+      .scroll-top.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .scroll-top:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.4);
+      }
+
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+        .hero p {
+          font-size: 1.2rem;
+        }
+        .section {
+          padding: 70px 0;
+        }
+        .section-title {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container text-center hero-content" data-aos="fade-up">
+        <h1 class="display-4 fw-bold">{{ portfolio.name }}</h1>
+        <p class="lead">{{ portfolio.title }}</p>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section bg-light" id="about">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">About Me</h2>
+        <div class="row">
+          <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
+            <div class="card p-4 h-100">
+              <p class="mb-4">{{ portfolio.summary }}</p>
+
+              <div class="contact-info mt-4">
+                {% if portfolio.email %}
+                <p><i class="fas fa-envelope"></i> {{ portfolio.email }}</p>
+                {% endif %} {% if portfolio.phone %}
+                <p><i class="fas fa-phone"></i> {{ portfolio.phone }}</p>
+                {% endif %} {% if portfolio.location %}
+                <p>
+                  <i class="fas fa-map-marker-alt"></i> {{ portfolio.location }}
+                </p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="400">
+            <div class="card p-4 h-100">
+              <h3 class="mb-4">Connect With Me</h3>
+              <p class="text-muted mb-4">Let's connect and discuss how we can collaborate on exciting projects!</p>
+              <div class="social-links">
+                {% if portfolio.social_github %}
+                <a href="{{ portfolio.social_github }}" target="_blank" title="GitHub"
+                  ><i class="fab fa-github"></i
+                ></a>
+                {% endif %} {% if portfolio.social_linkedin %}
+                <a href="{{ portfolio.social_linkedin }}" target="_blank" title="LinkedIn"
+                  ><i class="fab fa-linkedin-in"></i
+                ></a>
+                {% endif %} {% if portfolio.social_twitter %}
+                <a href="{{ portfolio.social_twitter }}" target="_blank" title="Twitter"
+                  ><i class="fab fa-twitter"></i
+                ></a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section" id="skills">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Skills</h2>
+        <div class="row">
+          {% for skill in skills %}
+          <div class="col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'100' }}">
+            <div class="mb-3">
+              <div class="d-flex justify-content-between mb-2">
+                <span class="fw-bold">{{ skill.name }}</span>
+                <span class="badge bg-primary rounded-pill">{{ skill.proficiency }}%</span>
+              </div>
+              <div class="skill-bar">
+                <div
+                  class="skill-progress"
+                  style="width: 0%"
+                  data-width="{{ skill.proficiency }}%"
+                ></div>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div class="col-12 text-center">
+            <p>No skills added yet.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section bg-light" id="projects">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Projects</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          {% for project in projects %}
+          <div class="col" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'100' }}">
+            <div class="card project-card">
+              {% if project.image %}
+              <div class="overflow-hidden">
+                <img
+                  src="{{ project.image.url }}"
+                  class="card-img-top"
+                  alt="{{ project.title }}"
+                />
+              </div>
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{ project.title }}</h5>
+                <p class="card-text">{{ project.description }}</p>
+                <div class="d-flex mt-4">
+                  {% if project.url %}
+                  <a
+                    href="{{ project.url }}"
+                    class="btn btn-primary me-2"
+                    target="_blank"
+                    >Live Demo</a
+                  >
+                  {% endif %} {% if project.github_url %}
+                  <a
+                    href="{{ project.github_url }}"
+                    class="btn btn-outline-dark"
+                    target="_blank"
+                    >GitHub</a
+                  >
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div class="col-12 text-center">
+            <p>No projects added yet.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="section" id="experience">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Work Experience</h2>
+        <div class="timeline">
+          {% for exp in experiences %}
+          <div class="experience-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'100' }}">
+            <h4>{{ exp.title }} at {{ exp.company }}</h4>
+            <p class="text-muted">
+              {{ exp.start_date|date:"M Y" }} -
+              {% if exp.current %}
+                Present
+              {% else %}
+                {{ exp.end_date|date:"M Y" }}
+              {% endif %}
+              {% if exp.location %}
+                | {{ exp.location }}
+              {% endif %}
+            </p>
+            <p>{{ exp.description }}</p>
+          </div>
+          {% empty %}
+          <div class="text-center">
+            <p>No work experience added yet.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="section bg-light" id="education">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Education</h2>
+        <div class="timeline">
+          {% for edu in education %}
+          <div class="education-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'100' }}">
+            <h4>
+              {{ edu.degree }}{% if edu.field_of_study %} in {{ edu.field_of_study }}{% endif %}
+            </h4>
+            <h5>{{ edu.institution }}</h5>
+            <p class="text-muted">
+              {{ edu.start_date|date:"M Y" }} - {% if edu.current %} Present {% else %} {{ edu.end_date|date:"M Y" }} {% endif %}
+            </p>
+            {% if edu.description %}
+            <p>{{ edu.description }}</p>
+            {% endif %}
+          </div>
+          {% empty %}
+          <div class="text-center">
+            <p>No education added yet.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container text-center">
+        <p class="text-black">&copy; {% now "Y" %} {{ portfolio.name }}. All rights reserved.</p>
+        <p class="small mt-4">Generated with Portfolio Generator</p>
+      </div>
+    </footer>
+
+    <!-- Scroll to top button -->
+    <div class="scroll-top">
+      <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+      });
+
+      // Animate skill bars
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          document.querySelectorAll('.skill-progress').forEach(function(bar) {
+            bar.style.width = bar.getAttribute('data-width');
+          });
+        }, 500);
+      });
+
+      // Scroll to top functionality
+      const scrollTop = document.querySelector('.scroll-top');
+      
+      window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+          scrollTop.classList.add('active');
+        } else {
+          scrollTop.classList.remove('active');
+        }
+      });
+      
+      scrollTop.addEventListener('click', function() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    </script>
+  </body>
+</html>

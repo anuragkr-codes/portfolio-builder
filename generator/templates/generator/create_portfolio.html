@@ -1,0 +1,751 @@
+{% extends 'generator/base.html' %} {% block title %}Create Your Portfolio{%
+endblock %} {% block extra_css %}
+<style>
+  .form-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  .add-item-btn {
+    margin-top: 10px;
+  }
+  .remove-item-btn {
+    margin-top: 32px;
+  }
+  .dynamic-form-item {
+    border-left: 3px solid #dee2e6;
+    padding-left: 15px;
+    margin-bottom: 15px;
+  }
+</style>
+{% endblock %} {% block content %}
+<h1 class="mb-4">Create Your Portfolio</h1>
+<p class="lead mb-4">
+  Fill out the information below to generate your portfolio using the
+  <strong>{{ template.name }}</strong> template.
+</p>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <!-- Personal Information Section -->
+  <div class="form-section">
+    <h3>Personal Information</h3>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="name" class="form-label">Full Name*</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          required
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="title" class="form-label">Professional Title*</label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          name="title"
+          placeholder="e.g. Full Stack Developer"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="summary" class="form-label">Professional Summary*</label>
+      <textarea
+        class="form-control"
+        id="summary"
+        name="summary"
+        rows="4"
+        required
+      ></textarea>
+      <div class="form-text">
+        A brief description of who you are professionally
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="email" class="form-label">Email Address*</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          required
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="phone" class="form-label">Phone Number</label>
+        <input type="text" class="form-control" id="phone" name="phone" />
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="location" class="form-label">Location</label>
+      <input
+        type="text"
+        class="form-control"
+        id="location"
+        name="location"
+        placeholder="e.g. New York, NY"
+      />
+    </div>
+
+    <h4 class="mt-4">Social Links</h4>
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="social_github" class="form-label">GitHub</label>
+        <input
+          type="url"
+          class="form-control"
+          id="social_github"
+          name="social_github"
+          placeholder="https://github.com/yourusername"
+        />
+      </div>
+      <div class="col-md-4">
+        <label for="social_linkedin" class="form-label">LinkedIn</label>
+        <input
+          type="url"
+          class="form-control"
+          id="social_linkedin"
+          name="social_linkedin"
+          placeholder="https://linkedin.com/in/yourusername"
+        />
+      </div>
+      <div class="col-md-4">
+        <label for="social_twitter" class="form-label">Twitter/X</label>
+        <input
+          type="url"
+          class="form-control"
+          id="social_twitter"
+          name="social_twitter"
+          placeholder="https://twitter.com/yourusername"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Projects Section -->
+  <div class="form-section">
+    <h3>Projects</h3>
+    <p>Add your best projects to showcase your work</p>
+
+    <div id="projects-container">
+      <div class="dynamic-form-item">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="project_title_0" class="form-label"
+              >Project Title*</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="project_title_0"
+              name="project_title"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="project_url_0" class="form-label">Live URL</label>
+            <input
+              type="url"
+              class="form-control"
+              id="project_url_0"
+              name="project_url"
+              placeholder="https://..."
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="project_description_0" class="form-label"
+            >Description*</label
+          >
+          <textarea
+            class="form-control"
+            id="project_description_0"
+            name="project_description"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="project_github_url_0" class="form-label"
+            >GitHub Repository</label
+          >
+          <input
+            type="url"
+            class="form-control"
+            id="project_github_url_0"
+            name="project_github_url"
+            placeholder="https://github.com/..."
+          />
+        </div>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-outline-primary add-item-btn"
+      id="add-project"
+    >
+      Add Another Project
+    </button>
+  </div>
+
+  <!-- Skills Section -->
+  <div class="form-section">
+    <h3>Skills</h3>
+    <p>Add your technical and professional skills</p>
+
+    <div id="skills-container">
+      <div class="dynamic-form-item">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="skill_name_0" class="form-label">Skill Name*</label>
+            <input
+              type="text"
+              class="form-control"
+              id="skill_name_0"
+              name="skill_name"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="skill_category_0" class="form-label">Category</label>
+            <select
+              class="form-select"
+              id="skill_category_0"
+              name="skill_category"
+            >
+              <option value="language">Programming Language</option>
+              <option value="framework">Framework</option>
+              <option value="tool">Tool</option>
+              <option value="soft">Soft Skill</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="skill_proficiency_0" class="form-label"
+            >Proficiency (0-100)</label
+          >
+          <input
+            type="range"
+            class="form-range"
+            id="skill_proficiency_0"
+            name="skill_proficiency"
+            min="0"
+            max="100"
+            value="75"
+          />
+          <div class="d-flex justify-content-between">
+            <small>Beginner</small>
+            <small>Intermediate</small>
+            <small>Advanced</small>
+            <small>Expert</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-outline-primary add-item-btn"
+      id="add-skill"
+    >
+      Add Another Skill
+    </button>
+  </div>
+
+  <!-- Experience Section -->
+  <div class="form-section">
+    <h3>Work Experience</h3>
+    <p>Add your relevant work experience</p>
+
+    <div id="experiences-container">
+      <div class="dynamic-form-item">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="exp_title_0" class="form-label">Job Title*</label>
+            <input
+              type="text"
+              class="form-control"
+              id="exp_title_0"
+              name="exp_title"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="exp_company_0" class="form-label">Company*</label>
+            <input
+              type="text"
+              class="form-control"
+              id="exp_company_0"
+              name="exp_company"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="exp_location_0" class="form-label">Location</label>
+          <input
+            type="text"
+            class="form-control"
+            id="exp_location_0"
+            name="exp_location"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-5">
+            <label for="exp_start_date_0" class="form-label">Start Date*</label>
+            <input
+              type="date"
+              class="form-control"
+              id="exp_start_date_0"
+              name="exp_start_date"
+              required
+            />
+          </div>
+          <div class="col-md-5">
+            <label for="exp_end_date_0" class="form-label">End Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="exp_end_date_0"
+              name="exp_end_date"
+            />
+          </div>
+          <div class="col-md-2">
+            <div class="form-check mt-4">
+              <input
+                class="form-check-input current-job-check"
+                type="checkbox"
+                id="exp_current_0"
+                name="exp_current_0"
+              />
+              <label class="form-check-label" for="exp_current_0">
+                Current Job
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="exp_description_0" class="form-label">Description*</label>
+          <textarea
+            class="form-control"
+            id="exp_description_0"
+            name="exp_description"
+            rows="3"
+            required
+          ></textarea>
+          <div class="form-text">
+            Describe your responsibilities and achievements
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-outline-primary add-item-btn"
+      id="add-experience"
+    >
+      Add Another Experience
+    </button>
+  </div>
+
+  <!-- Education Section -->
+  <div class="form-section">
+    <h3>Education</h3>
+    <p>Add your educational background</p>
+
+    <div id="education-container">
+      <div class="dynamic-form-item">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="edu_institution_0" class="form-label"
+              >Institution*</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="edu_institution_0"
+              name="edu_institution"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="edu_degree_0" class="form-label">Degree*</label>
+            <input
+              type="text"
+              class="form-control"
+              id="edu_degree_0"
+              name="edu_degree"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="edu_field_0" class="form-label">Field of Study</label>
+          <input
+            type="text"
+            class="form-control"
+            id="edu_field_0"
+            name="edu_field"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-5">
+            <label for="edu_start_date_0" class="form-label">Start Date*</label>
+            <input
+              type="date"
+              class="form-control"
+              id="edu_start_date_0"
+              name="edu_start_date"
+              required
+            />
+          </div>
+          <div class="col-md-5">
+            <label for="edu_end_date_0" class="form-label">End Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="edu_end_date_0"
+              name="edu_end_date"
+            />
+          </div>
+          <div class="col-md-2">
+            <div class="form-check mt-4">
+              <input
+                class="form-check-input current-education-check"
+                type="checkbox"
+                id="edu_current_0"
+                name="edu_current_0"
+              />
+              <label class="form-check-label" for="edu_current_0">
+                Current Study
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="edu_description_0" class="form-label">Description</label>
+          <textarea
+            class="form-control"
+            id="edu_description_0"
+            name="edu_description"
+            rows="3"
+          ></textarea>
+          <div class="form-text">Additional information about your studies</div>
+        </div>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-outline-primary add-item-btn"
+      id="add-education"
+    >
+      Add Another Education
+    </button>
+  </div>
+
+  <div class="d-grid gap-2 col-md-6 mx-auto mb-5">
+    <button type="submit" class="btn btn-success btn-lg">
+      Generate My Portfolio
+    </button>
+    <a href="{% url 'generator:home' %}" class="btn btn-outline-secondary"
+      >Cancel</a
+    >
+  </div>
+</form>
+
+{% endblock %} {% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Projects
+    let projectCounter = 1;
+    document
+      .getElementById("add-project")
+      .addEventListener("click", function () {
+        const container = document.getElementById("projects-container");
+        const newProject = document.createElement("div");
+        newProject.className = "dynamic-form-item";
+        newProject.innerHTML = `
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="project_title_${projectCounter}" class="form-label">Project Title*</label>
+                        <input type="text" class="form-control" id="project_title_${projectCounter}" name="project_title" required>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="project_url_${projectCounter}" class="form-label">Live URL</label>
+                        <input type="url" class="form-control" id="project_url_${projectCounter}" name="project_url" placeholder="https://...">
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-outline-danger remove-item-btn">Remove</button>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="project_description_${projectCounter}" class="form-label">Description*</label>
+                    <textarea class="form-control" id="project_description_${projectCounter}" name="project_description" rows="3" required></textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="project_github_url_${projectCounter}" class="form-label">GitHub Repository</label>
+                    <input type="url" class="form-control" id="project_github_url_${projectCounter}" name="project_github_url" placeholder="https://github.com/...">
+                </div>
+            `;
+        container.appendChild(newProject);
+        projectCounter++;
+
+        newProject
+          .querySelector(".remove-item-btn")
+          .addEventListener("click", function () {
+            container.removeChild(newProject);
+          });
+      });
+
+    // Skills
+    let skillCounter = 1;
+    document.getElementById("add-skill").addEventListener("click", function () {
+      const container = document.getElementById("skills-container");
+      const newSkill = document.createElement("div");
+      newSkill.className = "dynamic-form-item";
+      newSkill.innerHTML = `
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="skill_name_${skillCounter}" class="form-label">Skill Name*</label>
+                        <input type="text" class="form-control" id="skill_name_${skillCounter}" name="skill_name" required>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="skill_category_${skillCounter}" class="form-label">Category</label>
+                        <select class="form-select" id="skill_category_${skillCounter}" name="skill_category">
+                            <option value="language">Programming Language</option>
+                            <option value="framework">Framework</option>
+                            <option value="tool">Tool</option>
+                            <option value="soft">Soft Skill</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-outline-danger remove-item-btn">Remove</button>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="skill_proficiency_${skillCounter}" class="form-label">Proficiency (0-100)</label>
+                    <input type="range" class="form-range" id="skill_proficiency_${skillCounter}" name="skill_proficiency" min="0" max="100" value="75">
+                    <div class="d-flex justify-content-between">
+                        <small>Beginner</small>
+                        <small>Intermediate</small>
+                        <small>Advanced</small>
+                        <small>Expert</small>
+                    </div>
+                </div>
+            `;
+      container.appendChild(newSkill);
+      skillCounter++;
+
+      newSkill
+        .querySelector(".remove-item-btn")
+        .addEventListener("click", function () {
+          container.removeChild(newSkill);
+        });
+    });
+
+    // Experiences
+    let expCounter = 1;
+    document
+      .getElementById("add-experience")
+      .addEventListener("click", function () {
+        const container = document.getElementById("experiences-container");
+        const newExp = document.createElement("div");
+        newExp.className = "dynamic-form-item";
+        newExp.innerHTML = `
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="exp_title_${expCounter}" class="form-label">Job Title*</label>
+                        <input type="text" class="form-control" id="exp_title_${expCounter}" name="exp_title" required>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="exp_company_${expCounter}" class="form-label">Company*</label>
+                        <input type="text" class="form-control" id="exp_company_${expCounter}" name="exp_company" required>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-outline-danger remove-item-btn">Remove</button>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="exp_location_${expCounter}" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="exp_location_${expCounter}" name="exp_location">
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-5">
+                        <label for="exp_start_date_${expCounter}" class="form-label">Start Date*</label>
+                        <input type="date" class="form-control" id="exp_start_date_${expCounter}" name="exp_start_date" required>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="exp_end_date_${expCounter}" class="form-label">End Date</label>
+                        <input type="date" class="form-control" id="exp_end_date_${expCounter}" name="exp_end_date">
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check mt-4">
+                            <input class="form-check-input current-job-check" type="checkbox" id="exp_current_${expCounter}" name="exp_current_${expCounter}">
+                            <label class="form-check-label" for="exp_current_${expCounter}">
+                                Current Job
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="exp_description_${expCounter}" class="form-label">Description*</label>
+                    <textarea class="form-control" id="exp_description_${expCounter}" name="exp_description" rows="3" required></textarea>
+                    <div class="form-text">Describe your responsibilities and achievements</div>
+                </div>
+            `;
+        container.appendChild(newExp);
+        expCounter++;
+
+        const currentCheckbox = newExp.querySelector(".current-job-check");
+        const endDateInput = newExp.querySelector('input[name="exp_end_date"]');
+
+        currentCheckbox.addEventListener("change", function () {
+          endDateInput.disabled = this.checked;
+          if (this.checked) {
+            endDateInput.value = "";
+          }
+        });
+
+        newExp
+          .querySelector(".remove-item-btn")
+          .addEventListener("click", function () {
+            container.removeChild(newExp);
+          });
+      });
+
+    // Education
+    let eduCounter = 1;
+    document
+      .getElementById("add-education")
+      .addEventListener("click", function () {
+        const container = document.getElementById("education-container");
+        const newEdu = document.createElement("div");
+        newEdu.className = "dynamic-form-item";
+        newEdu.innerHTML = `
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="edu_institution_${eduCounter}" class="form-label">Institution*</label>
+                        <input type="text" class="form-control" id="edu_institution_${eduCounter}" name="edu_institution" required>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="edu_degree_${eduCounter}" class="form-label">Degree*</label>
+                        <input type="text" class="form-control" id="edu_degree_${eduCounter}" name="edu_degree" required>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-outline-danger remove-item-btn">Remove</button>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="edu_field_${eduCounter}" class="form-label">Field of Study</label>
+                    <input type="text" class="form-control" id="edu_field_${eduCounter}" name="edu_field">
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-5">
+                        <label for="edu_start_date_${eduCounter}" class="form-label">Start Date*</label>
+                        <input type="date" class="form-control" id="edu_start_date_${eduCounter}" name="edu_start_date" required>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="edu_end_date_${eduCounter}" class="form-label">End Date</label>
+                        <input type="date" class="form-control" id="edu_end_date_${eduCounter}" name="edu_end_date">
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check mt-4">
+                            <input class="form-check-input current-education-check" type="checkbox" id="edu_current_${eduCounter}" name="edu_current_${eduCounter}">
+                            <label class="form-check-label" for="edu_current_${eduCounter}">
+                                Current Study
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="edu_description_${eduCounter}" class="form-label">Description</label>
+                    <textarea class="form-control" id="edu_description_${eduCounter}" name="edu_description" rows="3"></textarea>
+                    <div class="form-text">Additional information about your studies</div>
+                </div>
+            `;
+        container.appendChild(newEdu);
+        eduCounter++;
+
+        const currentCheckbox = newEdu.querySelector(
+          ".current-education-check"
+        );
+        const endDateInput = newEdu.querySelector('input[name="edu_end_date"]');
+
+        currentCheckbox.addEventListener("change", function () {
+          endDateInput.disabled = this.checked;
+          if (this.checked) {
+            endDateInput.value = "";
+          }
+        });
+
+        newEdu
+          .querySelector(".remove-item-btn")
+          .addEventListener("click", function () {
+            container.removeChild(newEdu);
+          });
+      });
+
+    // Handle "Current Job" checkbox for initial job
+    document
+      .querySelectorAll(".current-job-check")
+      .forEach(function (checkbox) {
+        checkbox.addEventListener("change", function () {
+          const row = this.closest(".row");
+          const endDateInput = row.querySelector('input[name="exp_end_date"]');
+          endDateInput.disabled = this.checked;
+          if (this.checked) {
+            endDateInput.value = "";
+          }
+        });
+      });
+
+    // Handle "Current Study" checkbox for initial education
+    document
+      .querySelectorAll(".current-education-check")
+      .forEach(function (checkbox) {
+        checkbox.addEventListener("change", function () {
+          const row = this.closest(".row");
+          const endDateInput = row.querySelector('input[name="edu_end_date"]');
+          endDateInput.disabled = this.checked;
+          if (this.checked) {
+            endDateInput.value = "";
+          }
+        });
+      });
+  });
+</script>
+{% endblock %}

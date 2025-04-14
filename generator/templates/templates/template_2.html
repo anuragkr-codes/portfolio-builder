@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ portfolio.name }} - Portfolio</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+      :root {
+        --primary-color: #0f172a;
+        --accent-color: #10b981;
+        --accent-hover: #059669;
+        --background-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-color: #1e293b;
+        --light-text: #64748b;
+        --border-radius: 4px;
+        --box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Space Grotesk', sans-serif;
+        line-height: 1.7;
+        color: var(--text-color);
+        background-color: var(--background-color);
+        overflow-x: hidden;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        color: var(--primary-color);
+      }
+
+      .hero {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 160px 0 120px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before,
+      .hero::after {
+        content: "";
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background: var(--accent-color);
+        opacity: 0.1;
+        border-radius: 50%;
+      }
+
+      .hero::before {
+        top: -100px;
+        right: -100px;
+        transform: scale(2);
+      }
+
+      .hero::after {
+        bottom: -150px;
+        left: -150px;
+        transform: scale(3);
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero h1 {
+        font-size: 4rem;
+        font-weight: 700;
+        letter-spacing: -1px;
+        margin-bottom: 1rem;
+        color: white;
+        position: relative;
+        display: inline-block;
+      }
+      
+      .hero h1::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -6px;
+        width: 100%;
+        height: 6px;
+        background-color: var(--accent-color);
+        border-radius: var(--border-radius);
+      }
+
+      .hero p {
+        font-size: 1.5rem;
+        font-weight: 400;
+        opacity: 0.8;
+        max-width: 600px;
+        margin: 0 auto 2rem;
+      }
+
+      .section {
+        padding: 100px 0;
+      }
+
+      .section-title {
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 60px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .section-title::before {
+        content: "";
+        display: block;
+        width: 50px;
+        height: 2px;
+        background-color: var(--accent-color);
+      }
+
+      .section-headline {
+        font-size: 2.75rem;
+        margin-bottom: 50px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: var(--primary-color);
+      }
+
+      .btn-custom {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius);
+        padding: 12px 30px;
+        font-weight: 600;
+        transition: var(--transition);
+      }
+
+      .btn-custom:hover {
+        background-color: var(--accent-hover);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.1);
+        color: white;
+      }
+
+      .btn-outline {
+        background-color: transparent;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+        border-radius: var(--border-radius);
+        padding: 12px 30px;
+        font-weight: 600;
+        transition: var(--transition);
+      }
+
+      .btn-outline:hover {
+        background-color: var(--primary-color);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.1);
+      }
+
+      .project-card {
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        border: none;
+        box-shadow: var(--box-shadow);
+        transition: var(--transition);
+        height: 100%;
+        position: relative;
+        z-index: 1;
+        background-color: var(--card-bg);
+      }
+
+      .project-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+      }
+
+      .project-card .card-title {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+      }
+
+      .project-card .card-body {
+        padding: 30px;
+      }
+
+      .project-card .card-text {
+        color: var(--light-text);
+        margin-bottom: 25px;
+      }
+
+      .project-image {
+        height: 220px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .project-image::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(15, 23, 42, 0.1);
+        transition: var(--transition);
+      }
+
+      .project-card:hover .project-image::after {
+        background: rgba(15, 23, 42, 0.05);
+      }
+
+      .skill-category {
+        margin-bottom: 50px;
+      }
+
+      .skill-category h3 {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        margin-bottom: 25px;
+        font-weight: 700;
+        position: relative;
+        display: inline-block;
+      }
+
+      .skill-category h3::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -6px;
+        width: 40px;
+        height: 3px;
+        background-color: var(--accent-color);
+        border-radius: var(--border-radius);
+      }
+
+      .skill-item {
+        margin-bottom: 20px;
+      }
+
+      .skill-name {
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .skill-bar {
+        height: 8px;
+        background-color: #e2e8f0;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+      }
+
+      .skill-progress {
+        height: 100%;
+        background-color: var(--accent-color);
+        border-radius: var(--border-radius);
+        position: relative;
+        transition: width 1.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+      }
+
+      .skill-progress::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-image: linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.15) 25%,
+          transparent 25%,
+          transparent 50%,
+          rgba(255, 255, 255, 0.15) 50%,
+          rgba(255, 255, 255, 0.15) 75%,
+          transparent 75%,
+          transparent
+        );
+        background-size: 16px 16px;
+        animation: move 2s linear infinite;
+      }
+
+      @keyframes move {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 32px 0;
+        }
+      }
+
+      .timeline {
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .timeline::after {
+        content: "";
+        position: absolute;
+        width: 2px;
+        background-color: var(--accent-color);
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -1px;
+      }
+
+      .timeline-item {
+        padding: 10px 40px;
+        position: relative;
+        width: 50%;
+        box-sizing: border-box;
+      }
+
+      .timeline-item:nth-child(odd) {
+        left: 0;
+      }
+
+      .timeline-item:nth-child(even) {
+        left: 50%;
+      }
+
+      .timeline-item::after {
+        content: "";
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background-color: white;
+        border: 4px solid var(--accent-color);
+        top: 18px;
+        border-radius: 50%;
+        z-index: 1;
+        box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.2);
+        transition: var(--transition);
+      }
+
+      .timeline-item:hover::after {
+        background-color: var(--accent-color);
+        transform: scale(1.1);
+        box-shadow: 0 0 0 8px rgba(16, 185, 129, 0.2);
+      }
+
+      .timeline-item:nth-child(odd)::after {
+        right: -12px;
+      }
+
+      .timeline-item:nth-child(even)::after {
+        left: -12px;
+      }
+
+      .timeline-content {
+        padding: 30px;
+        background-color: var(--card-bg);
+        position: relative;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        transition: var(--transition);
+      }
+
+      .timeline-content:hover {
+        box-shadow: 0 15px 30px rgba(15, 23, 42, 0.1);
+        transform: translateY(-5px);
+      }
+
+      .timeline-content h3 {
+        margin-top: 0;
+        color: var(--primary-color);
+        font-size: 1.5rem;
+      }
+
+      .timeline-content h4 {
+        color: var(--accent-color);
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+
+      .timeline-content .date {
+        display: inline-block;
+        background-color: var(--accent-color);
+        color: white;
+        padding: 5px 15px;
+        font-size: 0.8rem;
+        margin-bottom: 15px;
+        border-radius: 100px;
+        font-weight: 600;
+      }
+
+      .contact-info {
+        margin-bottom: 20px;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .contact-info i {
+        color: var(--accent-color);
+        font-size: 1.3rem;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(16, 185, 129, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: var(--transition);
+      }
+
+      .contact-info:hover i {
+        background-color: var(--accent-color);
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+      }
+
+      .social-links a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        background-color: var(--card-bg);
+        color: var(--primary-color);
+        border-radius: 50%;
+        font-size: 1.2rem;
+        transition: var(--transition);
+        box-shadow: var(--box-shadow);
+      }
+
+      .social-links a:hover {
+        background-color: var(--accent-color);
+        color: white;
+        transform: translateY(-5px);
+      }
+
+      .about-card {
+        background-color: var(--card-bg);
+        padding: 40px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        transition: var(--transition);
+      }
+
+      .about-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+      }
+
+      .highlight {
+        color: var(--accent-color);
+      }
+
+      footer {
+        background-color: var(--primary-color);
+        color: white;
+        text-align: center;
+        padding: 50px 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      footer::before,
+      footer::after {
+        content: "";
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background: var(--accent-color);
+        opacity: 0.05;
+        border-radius: 50%;
+      }
+
+      footer::before {
+        top: -150px;
+        right: -150px;
+      }
+
+      footer::after {
+        bottom: -150px;
+        left: -150px;
+      }
+
+      .footer-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .scroll-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background-color: var(--accent-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        transition: var(--transition);
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 999;
+      }
+
+      .scroll-top.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .scroll-top:hover {
+        background-color: var(--accent-hover);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
+      }
+
+      @media screen and (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+        .hero p {
+          font-size: 1.2rem;
+        }
+        .section {
+          padding: 70px 0;
+        }
+        .section-headline {
+          font-size: 2rem;
+        }
+        
+        .timeline::after {
+          left: 31px;
+        }
+
+        .timeline-item {
+          width: 100%;
+          padding-left: 70px;
+          padding-right: 25px;
+        }
+
+        .timeline-item:nth-child(even) {
+          left: 0;
+        }
+
+        .timeline-item::after {
+          left: 18px;
+        }
+
+        .timeline-item:nth-child(odd)::after {
+          right: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container text-center hero-content">
+        <h1 data-aos="fade-up">{{ portfolio.name }}</h1>
+        <p class="lead mb-5" data-aos="fade-up" data-aos-delay="100">{{ portfolio.title }}</p>
+
+        <div class="social-links justify-content-center" data-aos="fade-up" data-aos-delay="200">
+          {% if portfolio.social_github %}
+          <a href="{{ portfolio.social_github }}" target="_blank" title="GitHub"
+            ><i class="fab fa-github"></i
+          ></a>
+          {% endif %} {% if portfolio.social_linkedin %}
+          <a
+            href="{{ portfolio.social_linkedin }}"
+            target="_blank"
+            title="LinkedIn"
+            ><i class="fab fa-linkedin-in"></i
+          ></a>
+          {% endif %} {% if portfolio.social_twitter %}
+          <a
+            href="{{ portfolio.social_twitter }}"
+            target="_blank"
+            title="Twitter"
+            ><i class="fab fa-twitter"></i
+          ></a>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+      <div class="container">
+        <div data-aos="fade-up">
+          <div class="section-title">About Me</div>
+          <h2 class="section-headline">Passionate About Creating <span class="highlight">Innovative</span> Digital Experiences</h2>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-lg-10" data-aos="fade-up" data-aos-delay="100">
+            <div class="about-card">
+              <p class="lead mb-5">{{ portfolio.summary }}</p>
+
+              <div class="row mt-5">
+                {% if portfolio.email %}
+                <div class="col-md-4 mb-4">
+                  <div class="contact-info">
+                    <i class="fas fa-envelope"></i>
+                    <span>{{ portfolio.email }}</span>
+                  </div>
+                </div>
+                {% endif %} {% if portfolio.phone %}
+                <div class="col-md-4 mb-4">
+                  <div class="contact-info">
+                    <i class="fas fa-phone"></i>
+                    <span>{{ portfolio.phone }}</span>
+                  </div>
+                </div>
+                {% endif %} {% if portfolio.location %}
+                <div class="col-md-4 mb-4">
+                  <div class="contact-info">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>{{ portfolio.location }}</span>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section bg-white" id="skills">
+      <div class="container">
+        <div data-aos="fade-up">
+          <div class="section-title">My Expertise</div>
+          <h2 class="section-headline">Skills & <span class="highlight">Proficiencies</span></h2>
+        </div>
+
+        {% regroup skills by category as skill_categories %}
+
+        <div class="row">
+          {% for category in skill_categories %}
+          <div class="col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'100' }}">
+            <div class="skill-category">
+              <h3>
+                {% if category.grouper == 'language' %} Programming Languages {%
+                elif category.grouper == 'framework' %} Frameworks {% elif
+                category.grouper == 'tool' %} Tools {% elif category.grouper ==
+                'soft' %} Soft Skills {% else %} Other Skills {% endif %}
+              </h3>
+
+              {% for skill in category.list %}
+              <div class="skill-item">
+                <div class="skill-name">
+                  <div>{{ skill.name }}</div>
+                  <div>{{ skill.proficiency }}%</div>
+                </div>
+                <div class="skill-bar">
+                  <div
+                    class="skill-progress"
+                    style="width: 0%"
+                    data-width="{{ skill.proficiency }}%"
+                  ></div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% empty %}
+          <div class="col-12 text-center">
+            <p>No skills added yet.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section" id="projects">
+      <div class="container">
+        <div data-aos="fade-up">
+          <div class="section-title">Featured Work</div>
+          <h2 class="section-headline">Recent <span class="highlight">Projects</span></h2>
+        </div>
+        
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          {% for project in projects %}
+          <div class="col" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'100' }}">
+            <div class="project-card">
+              {% if project.image %}
+              <div
+                class="project-image"
+                style="background-image: url('{{ project.image.url }}'); background-size: cover; background-position: center;"
+              ></div>
+              {% else %}
+              <div
+                class="project-image d-flex align-items-center justify-content-center"
+                style="background-color: rgba(15, 23, 42, 0.05);"
+              >
+                <i class="fas fa-code fa-3x text-muted"></i>
+              </div>
+              {% endif %}
+              <div class="card-body">
+                <h4 class="card-title">{{ project.title }}</h4>
+                <p class="card-text">{{ project.description }}</p>
+                <div class="d-flex gap-3">
+                  {% if project.url %}
+                  <a
+                    href="{{ project.url }}"
+                    class="btn btn-custom"
+                    target="_blank"
+                    >View Project</a
+                  >
+                  {% endif %} {% if project.github_url %}
+                  <a
+                    href="{{ project.github_url }}"
+                    class="btn btn-outline"
+                    target="_blank"
+                  >
+                    <i class="fab fa-github me-2"></i>GitHub
+                  </a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div class="col-12 text-center">
+            <p>No projects added yet.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience & Education Section -->
+    <section class="section bg-white" id="experience">
+      <div class="container">
+        <div data-aos="fade-up">
+          <div class="section-title">Professional Journey</div>
+          <h2 class="section-headline">Experience & <span class="highlight">Education</span></h2>
+        </div>
+
+        <div class="timeline">
+          {% for exp in experiences %}
+          <div class="timeline-item" data-aos="{% if forloop.counter|divisibleby:2 %}fade-left{% else %}fade-right{% endif %}" data-aos-delay="{{ forloop.counter|add:'100' }}">
+            <div class="timeline-content">
+              <span class="date">
+                {{ exp.start_date|date:"M Y" }} - {% if exp.current %}Present{%
+                else %}{{ exp.end_date|date:"M Y" }}{% endif %}
+              </span>
+              <h3>{{ exp.title }}</h3>
+              <h4>{{ exp.company }}</h4>
+              {% if exp.location %}
+              <div class="mb-3 text-muted">
+                <i class="fas fa-map-marker-alt me-2"></i>{{ exp.location }}
+              </div>
+              {% endif %}
+              <p>{{ exp.description }}</p>
+            </div>
+          </div>
+          {% endfor %} {% for edu in education %}
+          <div class="timeline-item" data-aos="{% if forloop.counter|divisibleby:2 %}fade-left{% else %}fade-right{% endif %}" data-aos-delay="{{ forloop.counter|add:'100' }}">
+            <div class="timeline-content">
+              <span class="date">
+                {{ edu.start_date|date:"M Y" }} - {% if edu.current %}Present{%
+                else %}{{ edu.end_date|date:"M Y" }}{% endif %}
+              </span>
+              <h3>
+                {{ edu.degree }}{% if edu.field_of_study %} in {{
+                edu.field_of_study }}{% endif %}
+              </h3>
+              <h4>{{ edu.institution }}</h4>
+              {% if edu.description %}
+              <p>{{ edu.description }}</p>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %} {% if not experiences and not education %}
+          <div class="text-center">
+            <p>No experience or education added yet.</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container footer-content">
+        <p>&copy; {% now "Y" %} {{ portfolio.name }}. All rights reserved.</p>
+        <p class="small mt-2">Generated with Portfolio Generator</p>
+      </div>
+    </footer>
+
+    <!-- Scroll to top button -->
+    <div class="scroll-top">
+      <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+      });
+
+      // Animate skill bars
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          document.querySelectorAll('.skill-progress').forEach(function(bar) {
+            bar.style.width = bar.getAttribute('data-width');
+          });
+        }, 500);
+      });
+
+      // Scroll to top functionality
+      const scrollTop = document.querySelector('.scroll-top');
+      
+      window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+          scrollTop.classList.add('active');
+        } else {
+          scrollTop.classList.remove('active');
+        }
+      });
+      
+      scrollTop.addEventListener('click', function() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    </script>
+  </body>
+</html>

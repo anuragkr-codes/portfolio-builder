@@ -1,0 +1,79 @@
+{% extends 'generator/base.html' %} {% block title %}Choose a Portfolio
+Template{% endblock %} {% block content %}
+<h1 class="mb-4">Choose a Portfolio Template</h1>
+<p class="lead mb-5">
+  Select a template for your new portfolio website. You'll be able to customize
+  all the content on the next step.
+</p>
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+  {% for template in templates %}
+  <div class="col">
+    <div class="card template-card">
+      {% if template.preview_image %}
+      <img
+        src="{{ template.preview_image.url }}"
+        class="card-img-top template-preview"
+        alt="{{ template.name }}"
+      />
+      {% else %}
+      <div
+        class="card-img-top template-preview bg-light d-flex align-items-center justify-content-center"
+      >
+        <p class="text-muted">No preview available</p>
+      </div>
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ template.name }}</h5>
+        <p class="card-text">{{ template.description }}</p>
+        <a
+          href="{% url 'generator:select_template' template.id %}"
+          class="btn btn-primary"
+          >Select</a
+        >
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <div class="alert alert-info">
+      No templates available yet. Please check back later.
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Recent Portfolios Section -->
+<h2 class="mt-5 mb-4">Recent Portfolios</h2>
+<p class="lead mb-4">Check out some of the portfolios created with our tool.</p>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {% for portfolio in portfolios %}
+  <div class="col">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">{{ portfolio.name }}'s Portfolio</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ portfolio.title }}</h6>
+        <p class="card-text">{{ portfolio.summary|truncatechars:100 }}</p>
+        <p class="card-text">
+          <small class="text-muted"
+            >Created on {{ portfolio.created_at|date:"F j, Y" }}</small
+          >
+        </p>
+        <a
+          href="{% url 'generator:view_portfolio' portfolio.unique_id %}"
+          class="btn btn-outline-primary"
+          >View Portfolio</a
+        >
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <div class="alert alert-info">
+      No portfolios have been created yet. Be the first to create yours!
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
