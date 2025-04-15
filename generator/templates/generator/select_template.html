@@ -1,20 +1,21 @@
 {% extends 'generator/base.html' %} {% block title %}{{ template.name }} -
-Confirm Selection{% endblock %} {% block content %}
+Confirm Selection{% endblock %}
+{% load static %}
+{% block content %}
 <div class="row">
   <div class="col-md-6">
     {% if template.preview_image %}
-    <img
-      src="{{ template.preview_image.url }}"
-      class="img-fluid rounded"
-      alt="{{ template.name }}"
-    />
+      <img
+        src="{{ template.preview_image.url }}"
+        class="img-fluid rounded"
+        alt="{{ template.name }}"
+      />
     {% else %}
-    <div
-      class="bg-light p-5 rounded d-flex align-items-center justify-content-center"
-      style="height: 300px"
-    >
-      <p class="text-muted">No preview available</p>
-    </div>
+      <img
+        src="{% static 'template_previews/default_preview.png' %}"
+        class="img-fluid rounded"
+        alt="No preview available"
+      />
     {% endif %}
   </div>
   <div class="col-md-6">
@@ -31,14 +32,12 @@ Confirm Selection{% endblock %} {% block content %}
         <li class="list-group-item">Education</li>
       </ul>
 
-      <a
-        href="{% url 'generator:create_portfolio' template.id %}"
-        class="btn btn-primary btn-lg"
-        >Continue with this template</a
-      >
-      <a href="{% url 'generator:home' %}" class="btn btn-outline-secondary"
-        >Choose another template</a
-      >
+      <a href="{% url 'generator:create_portfolio' template.id %}" class="btn btn-primary btn-lg">
+        Continue with this template
+      </a>
+      <a href="{% url 'generator:home' %}" class="btn btn-outline-secondary">
+        Choose another template
+      </a>
     </div>
   </div>
 </div>
