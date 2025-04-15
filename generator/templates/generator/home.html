@@ -15,10 +15,10 @@
   <div class="col">
     <div class="card template-card">
       {% if template.id == 1 %}
-      <img src="{% get_media_prefix %}template_previews/template1_preview.png" class="card-img-top template-preview"
+      <img src="{% static 'template_previews/template1_preview.png' %}" class="card-img-top template-preview"
         alt="{{ template.name }}" />
       {% elif template.id == 2 %}
-      <img src="{% get_media_prefix %}template_previews/template2_preview.png" class="card-img-top template-preview"
+      <img src="{% static 'template_previews/template2_preview.png' %}" class="card-img-top template-preview"
         alt="{{ template.name }}" />
       {% elif template.preview_image %}
       <img src="{{ template.preview_image.url }}" class="card-img-top template-preview" alt="{{ template.name }}" />
