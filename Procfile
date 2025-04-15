@@ -1,0 +1,1 @@
+web: gunicorn portfolio_generator.wsgi:application --log-file -
