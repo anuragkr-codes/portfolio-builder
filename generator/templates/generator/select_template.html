@@ -5,11 +5,11 @@ Confirm Selection{% endblock %}
 <div class="row">
   <div class="col-md-6">
     {% if template.preview_image %}
-      <img
-        src="{{ template.preview_image.url }}"
-        class="img-fluid rounded"
-        alt="{{ template.name }}"
-      />
+    <img
+    src="{% static '/' %}{{ template.preview_image }}"
+    class="img-fluid rounded"
+    alt="{{ template.name }}"
+  />
     {% else %}
       <img
         src="{% static 'template_previews/default_preview.png' %}"
