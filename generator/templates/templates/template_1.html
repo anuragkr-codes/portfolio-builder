@@ -578,7 +578,7 @@
           {% for edu in education %}
           <div class="education-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'100' }}">
             <h4>
-              {{ edu.degree }}{% if edu.field_of_study %} in {{ edu.field_of_study }}{% endif %}
+              {{ edu.degree }} {% if edu.field_of_study %} in {{ edu.field_of_study }} {% endif %}
             </h4>
             <h5>{{ edu.institution }}</h5>
             <p class="text-muted">

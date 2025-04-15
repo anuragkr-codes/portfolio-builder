@@ -800,8 +800,7 @@
                 else %}{{ edu.end_date|date:"M Y" }}{% endif %}
               </span>
               <h3>
-                {{ edu.degree }}{% if edu.field_of_study %} in {{
-                edu.field_of_study }}{% endif %}
+                {{ edu.degree }}{% if edu.field_of_study %} in {{ edu.field_of_study }}{% endif %}
               </h3>
               <h4>{{ edu.institution }}</h4>
               {% if edu.description %}
